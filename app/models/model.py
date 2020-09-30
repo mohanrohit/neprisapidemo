@@ -85,6 +85,36 @@ class Model(BaseModel):
 
         return new_model
 
+    def save(self):
+        db = get_db()
+
+        # exclude the id and uri
+        columns = [k for k in self.dict() if k not in ["id", "uri"]]
+
+        values = [f"{column} = '{getattr(self, column)}'" for column in columns]
+
+        sql = f"UPDATE {self.__tablename__} SET "
+
+        sql = sql + ", ".join(values) + f" WHERE id = {self.id}"
+
+        cursor = db.cursor()
+        cursor.execute(sql)
+        db.commit()
+
+        return self
+
+
+    def delete(self):
+        db = get_db()
+
+        sql = f"DELETE FROM {self.__tablename__} WHERE id = {self.id}"
+
+        cursor = db.cursor()
+        cursor.execute(sql)
+        db.commit()
+
+        return None
+
 
     def get_link(self, endpoint, **params):
         return app.url_path_for(endpoint, **params)

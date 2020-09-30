@@ -5,7 +5,12 @@ from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-app = FastAPI()
+tags = [
+    { "name": "Class", "description": "Operations with the `Class` resource" },
+    { "name": "Student", "description": "Operations with the `Student` resource" }
+]
+
+app = FastAPI(title="Nepris API Demo", openapi_tags=tags)
 
 def get_db():
     db = sqlite3.connect("db/students.db")
@@ -13,10 +18,6 @@ def get_db():
     db.set_trace_callback(print)
 
     return db
-
-
-def get_app():
-    return app
 
 
 from app import routers
@@ -32,7 +33,7 @@ async def http_exception_handler(request, exc):
     )
 
 
-@app.get("/routes")
+@app.get("/", tags=["Default"])
 def index():
     routes = []
 

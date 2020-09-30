@@ -29,3 +29,8 @@ class GetClass(Class):
         Class.__init__(self, **params)
 
         self.students = self.get_link("list_students_for_class", id=self.id)
+
+class UpdateClass(Class):
+    name: str = None
+    subject: str = None
+    course_code: str = None

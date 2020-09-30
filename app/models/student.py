@@ -14,8 +14,10 @@ class Student(Model):
         if self.class_id:
             self.uri = self.get_link("get_student", id=self.id)
 
+
 class NewStudent(Student):
     pass
+
 
 class GetStudent(Student):
     klass: str = None
@@ -24,3 +26,7 @@ class GetStudent(Student):
         Student.__init__(self, **params)
 
         self.klass = self.get_link("get_class", id=self.class_id)
+
+
+class UpdateStudent(Student):
+    name: str = None
