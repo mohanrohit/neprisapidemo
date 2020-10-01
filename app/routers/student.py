@@ -23,7 +23,7 @@ def get_student(id: int):
     student = Student.one(id=id)
 
     if not student:
-        raise HTTPException(status_code=404, detail=f"Student with id {id} not found")
+        raise HTTPException(status_code=404, detail=f"Student with id {id} was not found")
 
     student = GetStudent(**student.dict())
 
@@ -36,7 +36,7 @@ def update_student(id: int, update: UpdateStudent):
     student = Student.one(id=id)
 
     if not student:
-        raise HTTPException(status_code=404, detail=f"No student with id {id} was found")
+        raise HTTPException(status_code=404, detail=f"Student with id {id} was not found")
 
     student.name = update.name or student.name
 
@@ -51,7 +51,7 @@ def delete_student(id: int, response: Response):
     student = Student.one(id=id)
 
     if not student:
-        raise HTTPException(status_code=404, detail=f"No student with id {id} was found")
+        raise HTTPException(status_code=404, detail=f"Student with id {id} was not found")
 
     student.delete()
 

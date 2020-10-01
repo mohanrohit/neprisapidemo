@@ -31,7 +31,12 @@ def list_classes():
 # GET /api/v1/classes/{id}
 @router.get("/{id}", response_model=GetClass, response_model_exclude=["id"], tags=["Class"])
 def get_class(id: int):
-    klass = GetClass(**Class.one(id=id).dict())
+    klass = Class.one(id=id)
+
+    if not klass:
+        raise HTTPException(status_code=404, detail=f"Class with id {id} was not found")
+
+    klass = GetStudent(**student.dict())
 
     return klass
 
@@ -67,7 +72,7 @@ def list_students_for_class(id: int):
     students = Student.all(class_id=id)
 
     if len(students) == 0:
-        raise HTTPException(status_code=404, detail=f"No students found for class {id}")
+        raise HTTPException(status_code=404, detail=f"No students were found for class {id}")
 
     students = [GetStudent(**student.dict()) for student in students]
 
